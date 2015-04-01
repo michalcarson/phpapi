@@ -15,7 +15,7 @@ class MockRequest extends Request {
     protected $mock_log = array();
 
     protected function getUrl() {
-        return 'http://apidev.salestax.solutions/echo';
+        return 'http://apidev.salestax.solutions/version';
     }
 
     protected function makeResponse(HttpResponse $response, $errors) {

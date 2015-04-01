@@ -97,6 +97,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $req->onefish = 'twofish';
         $resp = $req->send();
 
+        $this->assertEquals(200, $resp->code);
         $this->assertEquals('twofish', $resp->body->onefish);
 
     }
