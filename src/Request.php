@@ -108,7 +108,7 @@ abstract class Request {
 
             $response = $request->send();
 
-        } catch(\Httpful\Exception\ConnectionErrorException $e) {
+        } catch (\Httpful\Exception\ConnectionErrorException $e) {
             $response = new HttpResponse(json_encode($this->errors), 'HTTP/1.1 500 Connection Error', $request);
         }
 
@@ -123,7 +123,9 @@ abstract class Request {
      * @param string $error
      */
     public function errorCallback($error) {
-        if(class_exists('\FirePHP', true)) {
+
+        // TODO: use monolog
+        if (class_exists('\FirePHP', true)) {
             $fb = \FirePHP::getInstance(true);
             $fb->error($error, 'error');
         }
@@ -136,15 +138,15 @@ abstract class Request {
      * @param \Httpful\Response $response
      */
     protected function logResponse(HttpResponse $response) {
-        if($this->logging && strlen($this->log_file)) {
+        if ($this->logging && strlen($this->log_file)) {
 
             $headers = array();
-            foreach($response->headers->toArray() as $key => $val) {
+            foreach ($response->headers->toArray() as $key => $val) {
                 $headers[] = "$key => $val";
             }
 
             $data = array();
-            foreach($this->data as $key => $val) {
+            foreach ($this->data as $key => $val) {
                 $data[] = "$key => $val";
             }
 
@@ -154,13 +156,13 @@ abstract class Request {
                     . "URL: $this->url\n"
                     . "Data: \n " . implode("\n ", $data) . "\n";
 
-            if($response->hasErrors()) {
+            if ($response->hasErrors()) {
                 $log .= "Errors:\n " . implode("\n ", $this->errors) . "\n";
             }
 
             $log .= "Headers:\n " . implode("\n ", $headers) . "\n"
                     . "Response:\n" . var_export($response->body, true) . "\n\n";
-            
+
             $this->writeLog($log);
         }
 
@@ -171,8 +173,8 @@ abstract class Request {
      * @param string $content
      */
     protected function writeLog($content) {
-        if($this->logging && strlen($this->log_file) && strlen($content)) {
-// TODO: use League/Flysystem for log
+        if ($this->logging && strlen($this->log_file) && strlen($content)) {
+            // TODO: use monolog
             file_put_contents($this->log_file, $content, FILE_APPEND);
         }
 
@@ -184,7 +186,7 @@ abstract class Request {
     }
 
     public function __get($name) {
-        if(isset($this->data[$name])) {
+        if (isset($this->data[$name])) {
             return $this->data[$name];
         }
 

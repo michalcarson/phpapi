@@ -36,8 +36,8 @@ class MockRequest extends Request {
 
         // if the parent did not provide a value, look for one ourselves.
         // this may pick up a protected or private attribute.
-        if(is_null($ret)) {
-            if(isset($this->$name)) {
+        if (is_null($ret)) {
+            if (isset($this->$name)) {
                 $ret = $this->$name;
             }
         }

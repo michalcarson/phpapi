@@ -17,6 +17,7 @@ class ParseAddressResponse extends Response {
     /** @var array */
     public $errors;
 
+    /** @var array */
     public $data = array();
 
     public function __construct(HttpResponse $response, array $errors = array()) {
@@ -27,9 +28,9 @@ class ParseAddressResponse extends Response {
     }
 
     protected function parseResponse(HttpResponse $response) {
-        if(is_object($response->body)) {
+        if (is_object($response->body)) {
             $this->data = get_object_vars($response->body);
-        } elseif(is_array($response->body)) {
+        } elseif (is_array($response->body)) {
             $this->data = $response->body;
         }
 
