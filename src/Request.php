@@ -95,14 +95,15 @@ abstract class Request {
         $this->php_version = PHP_VERSION;
 
         $request = HttpRequest::post($this->url)
-                ->sendsForm()
+                ->sendsJson()
                 ->expectsJson()
-                ->body($this->data)
+                ->body(json_encode($this->data))
                 ->followRedirects()
                 ->withStrictSSL()
                 ->whenError(function($error) {
-            $this->errorCallback($error);
-        });
+                    $this->errorCallback($error);
+                }
+        );
 
         try {
 
@@ -140,6 +141,8 @@ abstract class Request {
     protected function logResponse(HttpResponse $response) {
         if ($this->logging && strlen($this->log_file)) {
 
+            $reqheaders = explode("\n", trim($response->request->raw_headers, "\n "));
+
             $headers = array();
             foreach ($response->headers->toArray() as $key => $val) {
                 $headers[] = "$key => $val";
@@ -154,13 +157,14 @@ abstract class Request {
                     . 'Request class: ' . get_class($response->request) . "\n"
                     . 'Response class: ' . get_class($response) . "\n"
                     . "URL: $this->url\n"
+                    . "Request Headers:\n " . implode("\n ", $reqheaders) . "\n"
                     . "Data: \n " . implode("\n ", $data) . "\n";
 
             if ($response->hasErrors()) {
                 $log .= "Errors:\n " . implode("\n ", $this->errors) . "\n";
             }
 
-            $log .= "Headers:\n " . implode("\n ", $headers) . "\n"
+            $log .= "Response Headers:\n " . implode("\n ", $headers) . "\n"
                     . "Response:\n" . var_export($response->body, true) . "\n\n";
 
             $this->writeLog($log);
