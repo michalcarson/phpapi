@@ -2,8 +2,8 @@
     "name": "michalcarson/symfony-xml-response",
     "type": "library",
     "description": "A simple XML Response formatter for Symfony.",
-    "keywords": ["salestax", "tax", "shopping cart"],
-    "homepage": "http://salestax.solutions",
+    "keywords": ["symfony", "xml", "response"],
+    "homepage": "http://www.carsonsoftwareengineering.com",
     "authors": [
         {
             "name": "Michal Carson",
