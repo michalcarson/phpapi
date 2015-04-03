@@ -11,13 +11,8 @@ use Httpful\Response as HttpResponse;
 
 class ParseAddressRequest extends Request {
 
-    const DEV_URL = 'http://apidev.salestax.solutions/parseAddress';
-    const PROD_URL = 'http://api.salestax.solutions/parseAddress';
-
-    protected function getUrl() {
-        return self::DEV_URL;
-
-    }
+    protected $development_url = 'http://apidev.salestax.solutions/parseAddress';
+    protected $production_url = 'http://api.salestax.solutions/parseAddress';
 
     protected function makeResponse(HttpResponse $response, $errors) {
         return new ParseAddressResponse($response, $errors);

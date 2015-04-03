@@ -22,6 +22,12 @@ abstract class Request {
     protected $url;
 
     /*
+     * Storage for the URLs to the API. Values should be set by the child class.
+     */
+    protected $production_url;
+    protected $development_url;
+
+    /*
      * Data we will be sending to the service. This array is built by the __set()
      * magic method. Push data here with $request->property_name syntax where
      * "property_name" is the name of the field you want to save into the array.
@@ -35,17 +41,26 @@ abstract class Request {
     protected $logging = true;
     protected $log_file;
 
+    /*
+     * Flag to indicate if we should call the Production API URL or the Dev URL
+     */
+    protected $production = true;
+
     /* error messages returned by Httpful */
     protected $errors = array();
 
     /**
-     * Must be implemented by the child class and return the URL to the web
-     * service we will be calling. This allows the child class to determine
-     * whether we are in development or production and supply the correct URL.
+     * Return the URL to the web service we will be calling.
      * This method will be called from the send() method.
      * @return string
      */
-    abstract protected function getUrl();
+    protected function getUrl() {
+        if ($this->production) {
+            return $this->production_url;
+        }
+        return $this->development_url;
+
+    }
 
     /**
      * Create an appropriate response object using the content just returned
@@ -65,8 +80,17 @@ abstract class Request {
     }
 
     /**
+     * Designate which URL we should be using for the API, production or dev.
+     * @param boolean $prod     true to call production
+     */
+    public function setProduction($prod = true) {
+        $this->production = ($prod == true);
+
+    }
+
+    /**
      * Turn logging on or off. Supply a falsey parameter to turn logging off.
-     * @param type $logging
+     * @param boolean $logging
      */
     public function setLogging($logging = true) {
         $this->logging = ($logging == true);
@@ -77,7 +101,7 @@ abstract class Request {
      * Set the path and filename for the log file. Must be a file the web server
      * user can write. Usually there is a log directory already established for
      * this purpose.
-     * @param type $log_file
+     * @param string $log_file
      */
     public function setLogFile($log_file) {
         $this->log_file = $log_file;
