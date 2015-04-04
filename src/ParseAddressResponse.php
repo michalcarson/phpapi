@@ -28,10 +28,14 @@ class ParseAddressResponse extends Response {
     }
 
     protected function parseResponse(HttpResponse $response) {
+
         if (is_object($response->body)) {
-            $this->data = get_object_vars($response->body);
+            $address = get_object_vars($response->body);
+            $this->data = get_object_vars($address['address']);
+
         } elseif (is_array($response->body)) {
-            $this->data = $response->body;
+            $this->data = $response->body['address'];
+            
         }
 
     }
