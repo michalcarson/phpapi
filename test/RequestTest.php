@@ -91,6 +91,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
 
     }
 
+    /**
+     * only run in dev environment
+     * @requires OS WIN32|WINNT
+     */
     public function testSend() {
 
         $req = new MockRequest();
