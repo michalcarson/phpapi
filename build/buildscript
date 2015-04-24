@@ -1,0 +1,3 @@
+#!/bin/bash
+/opt/bitnami/php/bin/php /opt/bitnami/php/bin/composer.phar install --no-dev --no-scripts --no-autoloader --no-progress;
+/opt/bitnami/php/bin/php /opt/bitnami/php/bin/composer.phar dumpautoload --no-dev --optimize;

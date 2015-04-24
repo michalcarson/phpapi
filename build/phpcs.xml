@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="CSE">
+
+    <description>A custom coding standard for Carson Software Engineering</description>
+
+    <rule ref="Generic.Files.LineLength.MaxExceeded">
+        <message>Line contains %s chars, which is longer than the max limit of %s</message>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <message>Line longer than %s characters; contains %s characters</message>
+    </rule>
+
+    <rule ref="PSR2">
+        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine"/>
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+    </rule>
+
+</ruleset>
