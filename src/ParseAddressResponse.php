@@ -35,7 +35,7 @@ class ParseAddressResponse extends Response {
 
         } elseif (is_array($response->body)) {
             $this->data = $response->body['address'];
-            
+
         }
 
     }

@@ -19,6 +19,7 @@ abstract class Request {
      * This value is provided by the getUrl method which must be implemented
      * in the child class.
      */
+
     protected $url;
 
     /*
@@ -119,14 +120,14 @@ abstract class Request {
         $this->php_version = PHP_VERSION;
 
         $request = HttpRequest::post($this->url)
-                ->sendsJson()
-                ->expectsJson()
-                ->body(json_encode($this->data))
-                ->followRedirects()
-                ->withStrictSSL()
-                ->whenError(function($error) {
-                    $this->errorCallback($error);
-                }
+            ->sendsJson()
+            ->expectsJson()
+            ->body(json_encode($this->data))
+            ->followRedirects()
+            ->withStrictSSL()
+            ->whenError(function($error) {
+            $this->errorCallback($error);
+        }
         );
 
         try {
@@ -178,18 +179,18 @@ abstract class Request {
             }
 
             $log = date('Y/m/d H:i:s') . " ====================================================\n"
-                    . 'Request class: ' . get_class($response->request) . "\n"
-                    . 'Response class: ' . get_class($response) . "\n"
-                    . "URL: $this->url\n"
-                    . "Request Headers:\n " . implode("\n ", $reqheaders) . "\n"
-                    . "Data: \n " . implode("\n ", $data) . "\n";
+                . 'Request class: ' . get_class($response->request) . "\n"
+                . 'Response class: ' . get_class($response) . "\n"
+                . "URL: $this->url\n"
+                . "Request Headers:\n " . implode("\n ", $reqheaders) . "\n"
+                . "Data: \n " . implode("\n ", $data) . "\n";
 
             if ($response->hasErrors()) {
                 $log .= "Errors:\n " . implode("\n ", $this->errors) . "\n";
             }
 
             $log .= "Response Headers:\n " . implode("\n ", $headers) . "\n"
-                    . "Response:\n" . var_export($response->body, true) . "\n\n";
+                . "Response:\n" . var_export($response->body, true) . "\n\n";
 
             $this->writeLog($log);
         }
