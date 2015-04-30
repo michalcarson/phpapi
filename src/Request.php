@@ -19,7 +19,6 @@ abstract class Request {
      * This value is provided by the getUrl method which must be implemented
      * in the child class.
      */
-
     protected $url;
 
     /*
@@ -126,8 +125,8 @@ abstract class Request {
             ->followRedirects()
             ->withStrictSSL()
             ->whenError(function($error) {
-            $this->errorCallback($error);
-        }
+                $this->errorCallback($error);
+            }
         );
 
         try {
