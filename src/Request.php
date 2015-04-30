@@ -124,10 +124,11 @@ abstract class Request {
             ->body(json_encode($this->data))
             ->followRedirects()
             ->withStrictSSL()
-            ->whenError(function($error) {
-                $this->errorCallback($error);
-            }
-        );
+            ->whenError(
+                function ($error) {
+                    $this->errorCallback($error);
+                }
+            );
 
         try {
 
