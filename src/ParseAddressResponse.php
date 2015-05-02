@@ -14,10 +14,16 @@ class ParseAddressResponse extends Response {
     /** @var \Httpful\Response */
     protected $response;
 
-    /** @var array */
+    /**
+     * Errors that occurred when trying to call the API endpoint.
+     * @var array
+     */
     public $errors;
 
-    /** @var array */
+    /**
+     * The data actually found in the address that was passed.
+     * @var array
+     */
     public $data = array();
 
     public function __construct(HttpResponse $response, array $errors = array()) {
