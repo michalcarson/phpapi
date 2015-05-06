@@ -17,6 +17,41 @@ class ParseAddressResponseTest extends \PHPUnit_Framework_TestCase {
     public function testParse() {
 
         $headers = "HTTP 200\r\nContent-Type: application/json\r\n\r\n";
+        $rates = (object) array(
+            40 => (object) array(
+                'jurisdiction_type' => '45',
+                'jusidiction_fips_code' => '40',
+                'general_interstate' => 0.045,
+                'general_intrastate' => 0.045,
+                'food_interstate' => 0.045,
+                'food_intrastate' => 0.045
+            ),
+            '079' => (object) array(
+                'jurisdiction_type' => '00',
+                'jusidiction_fips_code' => '079',
+                'general_interstate' => 0.02,
+                'general_intrastate' => 0.02,
+                'food_interstate' => 0.02,
+                'food_intrastate' => 0.02
+            ),
+            '07450' => (object) array(
+                'jurisdiction_type' => '01',
+                'jusidiction_fips_code' => '07450',
+                'general_interstate' => 0.03,
+                'general_intrastate' => 0.03,
+                'food_interstate' => 0.03,
+                'food_intrastate' => 0.03
+            ),
+            'total' => (object) array(
+                'jurisdiction_type' => '',
+                'jusidiction_fips_code' => '',
+                'general_interstate' => 0.095,
+                'general_intrastate' => 0.095,
+                'food_interstate' => 0.095,
+                'food_intrastate' => 0.095
+            ),
+            'basis' => 'address'
+        );
         $body = json_encode(array(
             'address' => array(
                 'street_address' => '123 ROBERT S KERR',
@@ -44,18 +79,26 @@ class ParseAddressResponseTest extends \PHPUnit_Framework_TestCase {
                 'missing' => array(
                         'Missing something'
                     ),
-                'conflict' => array()
+                'conflict' => array(),
+                'sales_tax_rates' => $rates
             )
         ));
         $request = HttpRequest::init(Http::POST)->body($body);
 
         $hres = new HttpResponse($body, $headers, $request);
+        $this->assertEquals('stdClass', get_class($hres->body));
+        $this->assertEquals(true, is_object($hres->body));
+
         $response = new ParseAddressResponse($hres, []);
 
         $this->assertEquals('ROBERT S KERR', $response->data['street_name']);
 
         $missing = $response->data['missing'];
         $this->assertEquals('Missing something', $missing[0]);
+
+        $rates = $response->data['sales_tax_rates'];
+        $this->assertEquals('address', $rates['basis']);
+        $this->assertEquals(0.095, $rates['total']['food_intrastate']);
 
     }
 
